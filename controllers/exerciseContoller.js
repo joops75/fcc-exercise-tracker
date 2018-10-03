@@ -11,7 +11,7 @@ module.exports = class {
         const { username } = req.body;
         if (!username) return res.send('Username required.');
         User.create({ username })
-            .then(doc => res.send({ _id: doc.id, username: doc.username }))
+            .then(doc => res.send({ _id: doc._id, username: doc.username }))
             .catch(err => { throw err; });
     }
 
@@ -24,16 +24,18 @@ module.exports = class {
         if (!durationOk) return res.send('Invalid duration (integer required)');
         if (!dateOk) return res.send('Invalid date');
         const fields = date ? { userId, description, duration, date } : { userId, description, duration };
-        const newExerise = await Exercise.create(fields);
-        User.findByIdAndUpdate(userId, { $push: { log: newExerise }, $inc: { count: 1 } }, { new: true, select: '-__v' })
-            .populate({
-                path: 'log',
-                select: '-_id -userId -__v -utcDate',
-                options: { sort: { date: -1 } }
-            })
+        const newExercise = await Exercise.create(fields);
+        User.findByIdAndUpdate(userId, { $push: { log: newExercise }, $inc: { count: 1 } }, { new: true, select: '-__v' })
+            .select('-log')
             .then(doc => {
                 if (!doc)  return res.send('No such userId exists');
-                res.send(doc)
+                res.send({
+                    _id: doc._id,
+                    username: doc.username,
+                    description: newExercise.description,
+                    duration: newExercise.duration,
+                    date: newExercise.date
+                })
             })
             .catch(err => { throw err; });
     }
