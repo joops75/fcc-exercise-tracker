@@ -4,7 +4,8 @@
 	"description": "A REST API project, part of Free Code Camp's curriculum",
 	"main": "server.js",
 	"scripts": {
-		"start": "node server.js"
+		"start": "node server.js",
+		"dev": "nodemon server.js"
 	},
 	"dependencies": {
 		"express": "^4.14.0",
@@ -15,10 +16,10 @@
 		"shortid": "^2.2.6"
 	},
 	"engines": {
-		"node": "6.9.1"
+		"node": "10.6.0"
 	},
 	"repository": {
-		"url": "https://gomix.com/#!/project/welcome-project"
+		"url": "https://github.com/joops75/fcc-exercise-tracker"
 	},
 	"license": "MIT",
 	"keywords": [
