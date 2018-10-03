@@ -5,7 +5,8 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-tracker', { useMongoClient: true })
 
 app.use(cors())
 
@@ -14,10 +15,9 @@ app.use(bodyParser.json())
 
 
 app.use(express.static('public'))
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html')
-});
 
+// Routes must be declared before error handling middleware
+require('./routes/api')(app);
 
 // Not found middleware
 app.use((req, res, next) => {
