@@ -1,12 +1,13 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-
 const cors = require('cors')
-
 const mongoose = require('mongoose')
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-tracker', { useMongoClient: true })
+
+require('dotenv').config()
+
+mongoose.Promise = global.Promise
+mongoose.connect(process.env.MONGO_URI, { useMongoClient: true })
 
 app.use(cors())
 
